@@ -37,7 +37,7 @@
         </div>
 
         <div class="row g-4">
-            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" th:each="category, iterStat : ${categories}" data-aos="fade-up" th:data-aos-delay="${(iterStat.index % 4) * 100}">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-12" th:each="category, iterStat : ${categories}" data-aos="fade-up" th:data-aos-delay="${(iterStat.index % 4) * 100}">
                 <div class="card h-100 border-0 shadow-sm category-card position-relative overflow-hidden transition-all">
                     <!-- Image or Dynamic Icon Banner -->
                     <div class="category-header text-center py-4 px-3" style="background: rgba(111, 78, 55, 0.04); border-bottom: 1px solid rgba(111, 78, 55, 0.08);">

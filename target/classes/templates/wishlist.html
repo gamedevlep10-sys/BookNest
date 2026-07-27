@@ -34,7 +34,7 @@
         </div>
 
         <div class="row g-4" th:if="${wishlist != null and !wishlist.empty}">
-            <div class="col-lg-3 col-md-4 col-sm-6" th:each="item : ${wishlist}" data-aos="fade-up">
+            <div class="col-lg-3 col-md-6 col-12" th:each="item : ${wishlist}" data-aos="fade-up">
                 <div class="card h-100">
                     <div class="position-relative">
                         <img th:src="${item.book.imageUrl}" class="card-img-top book-card-img" alt="Book Cover">
