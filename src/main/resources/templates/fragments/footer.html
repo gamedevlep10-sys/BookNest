@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<footer th:fragment="footer" class="site-footer" data-aos="fade-up">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <h4 class="mb-3" style="font-family: 'Playfair Display', serif;">
+                    <i class="fas fa-book-open me-2"></i>BookNest
+                </h4>
+                <p class="text-white-50">Your premium destination for discovering and purchasing the finest books. Explore our curated collection and find your next great read.</p>
+                <div class="social-icons mt-3">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a th:href="@{/}">Home</a></li>
+                    <li class="mb-2"><a th:href="@{/books}">Books</a></li>
+                    <li class="mb-2"><a th:href="@{/categories}">Categories</a></li>
+                    <li class="mb-2"><a th:href="@{/about}">About Us</a></li>
+                    <li class="mb-2"><a th:href="@{/contact}">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="mb-3">Categories</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#">Fiction</a></li>
+                    <li class="mb-2"><a href="#">Business</a></li>
+                    <li class="mb-2"><a href="#">Technology</a></li>
+                    <li class="mb-2"><a href="#">Self Help</a></li>
+                    <li class="mb-2"><a href="#">Children</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="mb-3">Customer Support</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#">FAQ</a></li>
+                    <li class="mb-2"><a href="#">Shipping Info</a></li>
+                    <li class="mb-2"><a href="#">Returns</a></li>
+                    <li class="mb-2"><a href="#">Privacy Policy</a></li>
+                    <li class="mb-2"><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="mb-3">Contact Us</h5>
+                <ul class="list-unstyled text-white-50">
+                    <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>123 Book Street, India</li>
+                    <li class="mb-2"><i class="fas fa-phone me-2"></i>+91 98765 43210</li>
+                    <li class="mb-2"><i class="fas fa-envelope me-2"></i>info@booknest.com</li>
+                </ul>
+            </div>
+        </div>
+        
+        <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+        
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="mb-0 text-white-50">&copy; 2024 BookNest. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <p class="mb-0 text-white-50">Designed with <i class="fas fa-heart text-danger"></i> for Book Lovers</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS Animation JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Initialize AOS
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+        }
+        
+        // Back to top button
+        window.addEventListener('scroll', function() {
+            const backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                if (window.pageYOffset > 300) {
+                    backToTop.style.display = 'flex';
+                } else {
+                    backToTop.style.display = 'none';
+                }
+            }
+        });
+        
+        const backToTopBtn = document.getElementById('backToTop');
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+    </script>
+</footer>
+</body>
+</html>

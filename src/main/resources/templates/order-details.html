@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: navbar}"></div>
+
+    <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/profile}">Profile</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/profile/orders}">Orders</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Order Details</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h1 class="section-title">Order Details</h1>
+            <p class="text-muted" th:text="'Order Number: ' + ${order.orderNumber != null ? order.orderNumber : 'ORD-' + order.id}"></p>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i><span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i><span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="row" data-aos="fade-up">
+            <div class="col-lg-8 mb-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-4" style="font-family: 'Playfair Display', serif;">Order Items</h5>
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Book</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th class="text-end">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="item : ${order.orderItems}">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img th:src="${item.book.imageUrl}" class="rounded me-3" width="50" height="70" style="object-fit: cover;">
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold" th:text="${item.book.title}"></h6>
+                                                    <small class="text-muted" th:text="${item.book.author.name}"></small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td th:text="'₹' + ${item.price}"></td>
+                                        <td th:text="${item.quantity}"></td>
+                                        <td class="text-end fw-bold" th:text="'₹' + ${item.totalPrice != null ? item.totalPrice : item.price * item.quantity}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm" th:if="${order.shippingAddress != null}">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-3" style="font-family: 'Playfair Display', serif;"><i class="fas fa-truck me-2"></i>Shipping Address</h5>
+                        <p class="mb-1 text-dark fw-bold" th:text="${order.shippingAddress.addressLine1}"></p>
+                        <p class="mb-1 text-muted" th:if="${order.shippingAddress.addressLine2 != null and !order.shippingAddress.addressLine2.empty}" th:text="${order.shippingAddress.addressLine2}"></p>
+                        <p class="mb-1 text-muted" th:text="${order.shippingAddress.city} + ', ' + ${order.shippingAddress.state} + ' - ' + ${order.shippingAddress.postalCode}"></p>
+                        <p class="mb-1 text-muted" th:text="${order.shippingAddress.country}"></p>
+                        <p class="mb-0 text-muted" th:text="'Contact Phone: ' + ${order.shippingAddress.phone}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-4" style="font-family: 'Playfair Display', serif;">Order Summary</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Subtotal</span>
+                            <span th:text="'₹' + ${order.totalAmount}"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Shipping Fee</span>
+                            <span th:text="${order.shippingAmount != null and order.shippingAmount > 0} ? '₹' + ${order.shippingAmount} : 'FREE'" 
+                                  th:class="${order.shippingAmount != null and order.shippingAmount > 0} ? '' : 'text-success fw-bold'"></span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between fw-bold fs-5">
+                            <span>Grand Total</span>
+                            <span class="price" th:text="'₹' + ${order.finalAmount != null ? order.finalAmount : order.totalAmount}"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-4" style="font-family: 'Playfair Display', serif;">Order Information</h5>
+                        <p class="mb-2"><strong>Status:</strong> 
+                            <span class="badge px-3 py-2 ms-2" 
+                                  th:classappend="${order.status == 'DELIVERED' ? 'bg-success' : (order.status == 'CANCELLED' ? 'bg-danger' : (order.status == 'SHIPPED' ? 'bg-primary' : (order.status == 'PROCESSING' ? 'bg-info text-dark' : 'bg-warning text-dark')))}"
+                                  th:text="${order.status}"></span>
+                        </p>
+                        <p class="mb-2"><strong>Order Date:</strong> <span class="text-muted" th:text="${#temporals.format(order.createdAt, 'MMM dd, yyyy - hh:mm a')}"></span></p>
+                        <p class="mb-2"><strong>Payment Method:</strong> <span class="text-muted" th:text="${order.paymentMethod}"></span></p>
+                        <p class="mb-0"><strong>Payment Status:</strong> <span class="badge bg-secondary ms-2" th:text="${order.paymentStatus}"></span></p>
+                    </div>
+                </div>
+
+                <div th:if="${order.status == 'PENDING' or order.status == 'PROCESSING'}">
+                    <form th:action="@{/profile/order/{id}/cancel(id=${order.id})}" method="post" 
+                          onsubmit="return confirm('Are you sure you want to cancel this order? Item stock will be restored immediately.');">
+                        <button type="submit" class="btn btn-danger w-100 btn-lg shadow-sm">
+                            <i class="fas fa-times-circle me-2"></i>Cancel Order
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+    </script>
+</body>
+</html>

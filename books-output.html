@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookNest - Premium Online Book Store</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+    
+    <style>
+        :root {
+            --primary: #6F4E37;
+            --secondary: #F8F5F2;
+            --accent: #C89B3C;
+            --text: #222;
+            --light: #fff;
+            --dark: #333;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            background-color: var(--secondary);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .navbar {
+            background-color: var(--light);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .navbar-brand:hover {
+            color: var(--accent);
+        }
+        
+        .nav-link {
+            color: var(--text);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .book-card-img {
+            border-radius: 15px 15px 0 0;
+            height: 350px;
+            object-fit: cover;
+        }
+        
+        .badge-discount {
+            background-color: var(--accent);
+            color: white;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        .rating {
+            color: #ffc107;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 3rem 0;
+        }
+        
+        footer a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            color: white;
+        }
+        
+        .social-icons a {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            transition: color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: var(--accent);
+        }
+        
+        .cart-badge {
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+        }
+        
+        .search-form {
+            position: relative;
+        }
+        
+        .search-form input {
+            border-radius: 25px 0 0 25px;
+            border: 2px solid var(--primary);
+        }
+        
+        .search-form button {
+            border-radius: 0 25px 25px 0;
+            background-color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--secondary) 0%, #e8e4df 100%);
+            padding: 5rem 0;
+        }
+        
+        .category-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--accent);
+        }
+    </style>
+</head>
+<body class="books-page">
+    <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-book-open me-2"></i>BookNest
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/books">Books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/categories">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact</a>
+                </li>
+            </ul>
+            
+            <form class="d-flex search-form me-3" action="/search" method="get">
+                <input class="form-control" type="search" name="keyword" placeholder="Search books..." required>
+                <button class="btn" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+            
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/wishlist">
+                        <i class="fas fa-heart"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cart">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">
+                        <i class="fas fa-user"></i> Login
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+    <header class="books-banner" data-aos="fade-up">
+        <div class="container">
+            <nav aria-label="breadcrumb" class="books-breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Books</span></nav>
+            <p class="eyebrow">The BookNest edit</p><h1>Explore Our Collection</h1><p>Discover thousands of books from every genre.</p>
+        </div>
+    </header>
+    <main class="books-shell container">
+        <div class="books-toolbar" data-aos="fade-up" data-aos-delay="100">
+            <div class="books-search"><i class="fas fa-search" aria-hidden="true"></i><input id="bookSearch" type="search" placeholder="Search by title or author" aria-label="Search books"></div>
+            <select id="categoryFilter" aria-label="Filter by category"><option value="">All categories</option><option value="Self Help">Self Help</option><option value="Business">Business</option><option value="Fiction">Fiction</option><option value="Technology">Technology</option><option value="Science">Science</option><option value="Programming">Programming</option><option value="History">History</option><option value="Romance">Romance</option><option value="Children">Children</option><option value="Comics">Comics</option></select>
+            <select id="authorFilter" aria-label="Filter by author"><option value="">All authors</option><option value="James Clear">James Clear</option><option value="Robert Kiyosaki">Robert Kiyosaki</option><option value="Morgan Housel">Morgan Housel</option><option value="Ken Honda">Ken Honda</option><option value="Cal Newport">Cal Newport</option><option value="Jay Shetty">Jay Shetty</option><option value="Paulo Coelho">Paulo Coelho</option><option value="J.K. Rowling">J.K. Rowling</option><option value="J.R.R. Tolkien">J.R.R. Tolkien</option><option value="A.P.J. Abdul Kalam">A.P.J. Abdul Kalam</option></select>
+            <select id="languageFilter" aria-label="Filter by language"><option value="">All languages</option><option value="English">English</option><option value="Hindi">Hindi</option></select>
+            <select id="ratingFilter" aria-label="Filter by rating"><option value="0">Any rating</option><option value="4">4 stars &amp; up</option><option value="4.5">4.5 stars &amp; up</option></select>
+            <select id="sortBooks" aria-label="Sort books"><option value="newest">Newest</option><option value="price-low">Price Low to High</option><option value="price-high">Price High to Low</option><option value="rating">Best Rated</option><option value="popular">Most Popular</option></select>
+        </div>
+        <div class="books-layout">
+            <aside class="books-sidebar" data-aos="fade-right" data-aos-delay="150">
+                <div class="sidebar-heading"><span>Refine your search</span><i class="fas fa-sliders" aria-hidden="true"></i></div>
+                <div class="sidebar-group"><h2>Categories</h2>
+                    <button class="sidebar-link active" type="button" data-category="">All books <span>59</span></button>
+                    <button class="sidebar-link" type="button" data-category="Programming">Programming</button><button class="sidebar-link" type="button" data-category="Business">Business</button><button class="sidebar-link" type="button" data-category="Romance">Romance</button><button class="sidebar-link" type="button" data-category="History">History</button><button class="sidebar-link" type="button" data-category="Science">Science</button><button class="sidebar-link" type="button" data-category="Technology">Technology</button><button class="sidebar-link" type="button" data-category="Self Help">Self Help</button><button class="sidebar-link" type="button" data-category="Children">Children</button>
+                </div>
+                <div class="sidebar-group"><h2>Filter by</h2><label class="range-label" for="priceRange">Price <strong id="priceValue">₹1,500</strong></label><input id="priceRange" type="range" min="250" max="1500" step="50" value="1500"><div class="filter-tags"><span>₹250</span><span>₹1,500+</span></div><p class="filter-caption"><i class="fas fa-language" aria-hidden="true"></i> Language</p><p class="filter-caption"><i class="fas fa-building" aria-hidden="true"></i> Publisher</p><p class="filter-caption"><i class="fas fa-star" aria-hidden="true"></i> Rating</p></div>
+            </aside>
+            <section class="books-results" aria-labelledby="books-heading">
+                <div class="results-heading" data-aos="fade-up" data-aos-delay="200"><div><p class="eyebrow">Curated for curious minds</p><h2 id="books-heading">All books <span id="resultsCount">59</span></h2></div><span class="results-note">Showing the BookNest edit</span></div>
+                <div class="book-grid" id="bookGrid">
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="Atomic Habits" data-author="James Clear" data-category="Self Help" data-language="English" data-rating="4.50" data-price="381.6500" data-popular="34">
+                        <div class="cover-wrap"><a href="/book/1" class="cover-link"><img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&amp;h=400&amp;fit=crop" alt="Atomic Habits book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Self Help</p><h3>Atomic Habits</h3><p class="book-author">James Clear</p><p class="book-description">An Easy &amp; Proven Way to Build Good Habits &amp; Break Bad Ones</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.50</strong></div><div class="price-line"><div><span class="sale-price">₹382</span><span class="old-price">₹449</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="1"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="Rich Dad Poor Dad" data-author="Robert Kiyosaki" data-category="Business" data-language="English" data-rating="4.60" data-price="319.2000" data-popular="81">
+                        <div class="cover-wrap"><a href="/book/2" class="cover-link"><img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=300&amp;h=400&amp;fit=crop" alt="Rich Dad Poor Dad book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Business</p><h3>Rich Dad Poor Dad</h3><p class="book-author">Robert Kiyosaki</p><p class="book-description">What the Rich Teach Their Kids About Money That the Poor and Middle Class Do Not</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.60</strong></div><div class="price-line"><div><span class="sale-price">₹319</span><span class="old-price">₹399</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="2"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="The Psychology of Money" data-author="Morgan Housel" data-category="Business" data-language="English" data-rating="4.70" data-price="314.1000" data-popular="38">
+                        <div class="cover-wrap"><a href="/book/3" class="cover-link"><img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=300&amp;h=400&amp;fit=crop" alt="The Psychology of Money book cover" loading="lazy"></a><span class="discount-badge">-10%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Business</p><h3>The Psychology of Money</h3><p class="book-author">Morgan Housel</p><p class="book-description">Timeless Lessons on Wealth, Greed, and Happiness</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.70</strong></div><div class="price-line"><div><span class="sale-price">₹314</span><span class="old-price">₹349</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="3"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="Ikigai" data-author="Ken Honda" data-category="Self Help" data-language="English" data-rating="4.40" data-price="299.2500" data-popular="80">
+                        <div class="cover-wrap"><a href="/book/4" class="cover-link"><img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=300&amp;h=400&amp;fit=crop" alt="Ikigai book cover" loading="lazy"></a><span class="discount-badge">-25%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Self Help</p><h3>Ikigai</h3><p class="book-author">Ken Honda</p><p class="book-description">The Japanese Secret to a Long and Happy Life</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.40</strong></div><div class="price-line"><div><span class="sale-price">₹299</span><span class="old-price">₹399</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="4"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="Deep Work" data-author="Cal Newport" data-category="Self Help" data-language="English" data-rating="4.30" data-price="449.1000" data-popular="37">
+                        <div class="cover-wrap"><a href="/book/5" class="cover-link"><img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=300&amp;h=400&amp;fit=crop" alt="Deep Work book cover" loading="lazy"></a><span class="discount-badge">-10%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Self Help</p><h3>Deep Work</h3><p class="book-author">Cal Newport</p><p class="book-description">Rules for Focused Success in a Distracted World</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.30</strong></div><div class="price-line"><div><span class="sale-price">₹449</span><span class="old-price">₹499</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="5"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="Think Like a Monk" data-author="Jay Shetty" data-category="Self Help" data-language="English" data-rating="4.50" data-price="381.6500" data-popular="64">
+                        <div class="cover-wrap"><a href="/book/6" class="cover-link"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&amp;h=400&amp;fit=crop" alt="Think Like a Monk book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Self Help</p><h3>Think Like a Monk</h3><p class="book-author">Jay Shetty</p><p class="book-description">Train Your Mind for Peace and Purpose Every Day</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.50</strong></div><div class="price-line"><div><span class="sale-price">₹382</span><span class="old-price">₹449</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="6"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="The Alchemist" data-author="Paulo Coelho" data-category="Fiction" data-language="English" data-rating="4.80" data-price="209.3000" data-popular="9">
+                        <div class="cover-wrap"><a href="/book/7" class="cover-link"><img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&amp;h=400&amp;fit=crop" alt="The Alchemist book cover" loading="lazy"></a><span class="discount-badge">-30%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Fiction</p><h3>The Alchemist</h3><p class="book-author">Paulo Coelho</p><p class="book-description">A Magical Story About Following Your Dreams</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.80</strong></div><div class="price-line"><div><span class="sale-price">₹209</span><span class="old-price">₹299</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="7"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="Harry Potter and the Sorcerer&#39;s Stone" data-author="J.K. Rowling" data-category="Fiction" data-language="English" data-rating="4.90" data-price="479.2000" data-popular="82">
+                        <div class="cover-wrap"><a href="/book/8" class="cover-link"><img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=300&amp;h=400&amp;fit=crop" alt="Harry Potter and the Sorcerer&#39;s Stone book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Fiction</p><h3>Harry Potter and the Sorcerer&#39;s Stone</h3><p class="book-author">J.K. Rowling</p><p class="book-description">The First Book in the Magical Series</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.90</strong></div><div class="price-line"><div><span class="sale-price">₹479</span><span class="old-price">₹599</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="8"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="The Hobbit" data-author="J.R.R. Tolkien" data-category="Fiction" data-language="English" data-rating="4.70" data-price="381.6500" data-popular="93">
+                        <div class="cover-wrap"><a href="/book/9" class="cover-link"><img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300&amp;h=400&amp;fit=crop" alt="The Hobbit book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Fiction</p><h3>The Hobbit</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">There and Back Again - A Fantasy Classic</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.70</strong></div><div class="price-line"><div><span class="sale-price">₹382</span><span class="old-price">₹449</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="9"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="The Power of Now" data-author="Ken Honda" data-category="Fiction" data-language="English" data-rating="4.40" data-price="314.1000" data-popular="42">
+                        <div class="cover-wrap"><a href="/book/10" class="cover-link"><img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&amp;h=400&amp;fit=crop" alt="The Power of Now book cover" loading="lazy"></a><span class="discount-badge">-10%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Fiction</p><h3>The Power of Now</h3><p class="book-author">Ken Honda</p><p class="book-description">A Guide to Spiritual Enlightenment</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.40</strong></div><div class="price-line"><div><span class="sale-price">₹314</span><span class="old-price">₹349</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="10"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="1984" data-author="J.R.R. Tolkien" data-category="Fiction" data-language="English" data-rating="4.60" data-price="319.2000" data-popular="8">
+                        <div class="cover-wrap"><a href="/book/11" class="cover-link"><img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=300&amp;h=400&amp;fit=crop" alt="1984 book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Fiction</p><h3>1984</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">A Dystopian Masterpiece by George Orwell</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.60</strong></div><div class="price-line"><div><span class="sale-price">₹319</span><span class="old-price">₹399</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="11"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="The Lean Startup" data-author="Cal Newport" data-category="Business" data-language="English" data-rating="4.50" data-price="424.1500" data-popular="16">
+                        <div class="cover-wrap"><a href="/book/12" class="cover-link"><img src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=300&amp;h=400&amp;fit=crop" alt="The Lean Startup book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Business</p><h3>The Lean Startup</h3><p class="book-author">Cal Newport</p><p class="book-description">How Today&#39;s Entrepreneurs Use Continuous Innovation</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.50</strong></div><div class="price-line"><div><span class="sale-price">₹424</span><span class="old-price">₹499</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="12"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="Zero to One" data-author="Morgan Housel" data-category="Business" data-language="English" data-rating="4.40" data-price="359.2000" data-popular="12">
+                        <div class="cover-wrap"><a href="/book/13" class="cover-link"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=300&amp;h=400&amp;fit=crop" alt="Zero to One book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Business</p><h3>Zero to One</h3><p class="book-author">Morgan Housel</p><p class="book-description">Notes on Startups, or How to Build the Future</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.40</strong></div><div class="price-line"><div><span class="sale-price">₹359</span><span class="old-price">₹449</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="13"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="Good to Great" data-author="James Clear" data-category="Business" data-language="English" data-rating="4.30" data-price="494.1000" data-popular="45">
+                        <div class="cover-wrap"><a href="/book/14" class="cover-link"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=300&amp;h=400&amp;fit=crop" alt="Good to Great book cover" loading="lazy"></a><span class="discount-badge">-10%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Business</p><h3>Good to Great</h3><p class="book-author">James Clear</p><p class="book-description">Why Some Companies Make the Leap and Others Don&#39;t</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.30</strong></div><div class="price-line"><div><span class="sale-price">₹494</span><span class="old-price">₹549</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="14"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="The Innovator&#39;s Dilemma" data-author="Robert Kiyosaki" data-category="Technology" data-language="English" data-rating="4.20" data-price="509.1500" data-popular="47">
+                        <div class="cover-wrap"><a href="/book/15" class="cover-link"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&amp;h=400&amp;fit=crop" alt="The Innovator&#39;s Dilemma book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Technology</p><h3>The Innovator&#39;s Dilemma</h3><p class="book-author">Robert Kiyosaki</p><p class="book-description">When New Technologies Cause Great Firms to Fail</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.20</strong></div><div class="price-line"><div><span class="sale-price">₹509</span><span class="old-price">₹599</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="15"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="Thinking, Fast and Slow" data-author="Morgan Housel" data-category="Science" data-language="English" data-rating="4.60" data-price="399.2000" data-popular="29">
+                        <div class="cover-wrap"><a href="/book/16" class="cover-link"><img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=300&amp;h=400&amp;fit=crop" alt="Thinking, Fast and Slow book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Science</p><h3>Thinking, Fast and Slow</h3><p class="book-author">Morgan Housel</p><p class="book-description">The Two Systems That Drive the Way We Think</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.60</strong></div><div class="price-line"><div><span class="sale-price">₹399</span><span class="old-price">₹499</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="16"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="Clean Code" data-author="Cal Newport" data-category="Programming" data-language="English" data-rating="4.80" data-price="629.1000" data-popular="84">
+                        <div class="cover-wrap"><a href="/book/17" class="cover-link"><img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&amp;h=400&amp;fit=crop" alt="Clean Code book cover" loading="lazy"></a><span class="discount-badge">-10%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Programming</p><h3>Clean Code</h3><p class="book-author">Cal Newport</p><p class="book-description">A Handbook of Agile Software Craftsmanship</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.80</strong></div><div class="price-line"><div><span class="sale-price">₹629</span><span class="old-price">₹699</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="17"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="Design Patterns" data-author="James Clear" data-category="Programming" data-language="English" data-rating="4.70" data-price="679.1500" data-popular="15">
+                        <div class="cover-wrap"><a href="/book/18" class="cover-link"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&amp;h=400&amp;fit=crop" alt="Design Patterns book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Programming</p><h3>Design Patterns</h3><p class="book-author">James Clear</p><p class="book-description">Elements of Reusable Object-Oriented Software</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.70</strong></div><div class="price-line"><div><span class="sale-price">₹679</span><span class="old-price">₹799</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="18"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="Effective Java" data-author="Cal Newport" data-category="Programming" data-language="English" data-rating="4.90" data-price="809.1000" data-popular="6">
+                        <div class="cover-wrap"><a href="/book/19" class="cover-link"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&amp;h=400&amp;fit=crop" alt="Effective Java book cover" loading="lazy"></a><span class="discount-badge">-10%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Programming</p><h3>Effective Java</h3><p class="book-author">Cal Newport</p><p class="book-description">Best Practices for the Java Platform</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.90</strong></div><div class="price-line"><div><span class="sale-price">₹809</span><span class="old-price">₹899</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="19"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="Introduction to Algorithms" data-author="James Clear" data-category="Programming" data-language="English" data-rating="4.80" data-price="799.2000" data-popular="16">
+                        <div class="cover-wrap"><a href="/book/20" class="cover-link"><img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&amp;h=400&amp;fit=crop" alt="Introduction to Algorithms book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Programming</p><h3>Introduction to Algorithms</h3><p class="book-author">James Clear</p><p class="book-description">A Comprehensive Guide to Algorithm Design</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.80</strong></div><div class="price-line"><div><span class="sale-price">₹799</span><span class="old-price">₹999</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="20"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="Java: The Complete Reference" data-author="Cal Newport" data-category="Programming" data-language="English" data-rating="4.50" data-price="636.6500" data-popular="20">
+                        <div class="cover-wrap"><a href="/book/21" class="cover-link"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&amp;h=400&amp;fit=crop" alt="Java: The Complete Reference book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Programming</p><h3>Java: The Complete Reference</h3><p class="book-author">Cal Newport</p><p class="book-description">The Definitive Java Programming Guide</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.50</strong></div><div class="price-line"><div><span class="sale-price">₹637</span><span class="old-price">₹749</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="21"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="Head First Java" data-author="James Clear" data-category="Programming" data-language="English" data-rating="4.40" data-price="519.2000" data-popular="97">
+                        <div class="cover-wrap"><a href="/book/22" class="cover-link"><img src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=300&amp;h=400&amp;fit=crop" alt="Head First Java book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Programming</p><h3>Head First Java</h3><p class="book-author">James Clear</p><p class="book-description">A Brain-Friendly Guide to Java Programming</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.40</strong></div><div class="price-line"><div><span class="sale-price">₹519</span><span class="old-price">₹649</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="22"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="Spring in Action" data-author="Cal Newport" data-category="Programming" data-language="English" data-rating="4.70" data-price="809.1000" data-popular="7">
+                        <div class="cover-wrap"><a href="/book/23" class="cover-link"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=300&amp;h=400&amp;fit=crop" alt="Spring in Action book cover" loading="lazy"></a><span class="discount-badge">-10%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Programming</p><h3>Spring in Action</h3><p class="book-author">Cal Newport</p><p class="book-description">Building Spring Applications with Java</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.70</strong></div><div class="price-line"><div><span class="sale-price">₹809</span><span class="old-price">₹899</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="23"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="The Pragmatic Programmer" data-author="James Clear" data-category="Programming" data-language="English" data-rating="4.90" data-price="594.1500" data-popular="62">
+                        <div class="cover-wrap"><a href="/book/24" class="cover-link"><img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=300&amp;h=400&amp;fit=crop" alt="The Pragmatic Programmer book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Programming</p><h3>The Pragmatic Programmer</h3><p class="book-author">James Clear</p><p class="book-description">Your Journey to Mastery in Software Development</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.90</strong></div><div class="price-line"><div><span class="sale-price">₹594</span><span class="old-price">₹699</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="24"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="Wings of Fire" data-author="A.P.J. Abdul Kalam" data-category="History" data-language="English" data-rating="4.80" data-price="261.7500" data-popular="77">
+                        <div class="cover-wrap"><a href="/book/25" class="cover-link"><img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=300&amp;h=400&amp;fit=crop" alt="Wings of Fire book cover" loading="lazy"></a><span class="discount-badge">-25%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">History</p><h3>Wings of Fire</h3><p class="book-author">A.P.J. Abdul Kalam</p><p class="book-description">An Autobiography of A.P.J. Abdul Kalam</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.80</strong></div><div class="price-line"><div><span class="sale-price">₹262</span><span class="old-price">₹349</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="25"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="Steve Jobs" data-author="Morgan Housel" data-category="History" data-language="English" data-rating="4.60" data-price="479.2000" data-popular="6">
+                        <div class="cover-wrap"><a href="/book/26" class="cover-link"><img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=300&amp;h=400&amp;fit=crop" alt="Steve Jobs book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">History</p><h3>Steve Jobs</h3><p class="book-author">Morgan Housel</p><p class="book-description">The Exclusive Biography of Apple&#39;s Founder</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.60</strong></div><div class="price-line"><div><span class="sale-price">₹479</span><span class="old-price">₹599</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="26"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="The Diary of a Young Girl" data-author="Paulo Coelho" data-category="History" data-language="English" data-rating="4.70" data-price="209.3000" data-popular="25">
+                        <div class="cover-wrap"><a href="/book/27" class="cover-link"><img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&amp;h=400&amp;fit=crop" alt="The Diary of a Young Girl book cover" loading="lazy"></a><span class="discount-badge">-30%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">History</p><h3>The Diary of a Young Girl</h3><p class="book-author">Paulo Coelho</p><p class="book-description">Anne Frank&#39;s Diary from World War II</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.70</strong></div><div class="price-line"><div><span class="sale-price">₹209</span><span class="old-price">₹299</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="27"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="Sapiens" data-author="J.R.R. Tolkien" data-category="History" data-language="English" data-rating="4.50" data-price="424.1500" data-popular="59">
+                        <div class="cover-wrap"><a href="/book/28" class="cover-link"><img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300&amp;h=400&amp;fit=crop" alt="Sapiens book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">History</p><h3>Sapiens</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">A Brief History of Humankind</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.50</strong></div><div class="price-line"><div><span class="sale-price">₹424</span><span class="old-price">₹499</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="28"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="Gandhi: An Autobiography" data-author="A.P.J. Abdul Kalam" data-category="History" data-language="English" data-rating="4.60" data-price="319.2000" data-popular="13">
+                        <div class="cover-wrap"><a href="/book/29" class="cover-link"><img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=300&amp;h=400&amp;fit=crop" alt="Gandhi: An Autobiography book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">History</p><h3>Gandhi: An Autobiography</h3><p class="book-author">A.P.J. Abdul Kalam</p><p class="book-description">The Story of My Experiments with Truth</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.60</strong></div><div class="price-line"><div><span class="sale-price">₹319</span><span class="old-price">₹399</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="29"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="Pride and Prejudice" data-author="Paulo Coelho" data-category="Romance" data-language="English" data-rating="4.70" data-price="224.2500" data-popular="42">
+                        <div class="cover-wrap"><a href="/book/30" class="cover-link"><img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&amp;h=400&amp;fit=crop" alt="Pride and Prejudice book cover" loading="lazy"></a><span class="discount-badge">-25%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Romance</p><h3>Pride and Prejudice</h3><p class="book-author">Paulo Coelho</p><p class="book-description">A Classic Romance Novel by Jane Austen</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.70</strong></div><div class="price-line"><div><span class="sale-price">₹224</span><span class="old-price">₹299</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="30"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="The Notebook" data-author="J.K. Rowling" data-category="Romance" data-language="English" data-rating="4.40" data-price="279.2000" data-popular="72">
+                        <div class="cover-wrap"><a href="/book/31" class="cover-link"><img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=300&amp;h=400&amp;fit=crop" alt="The Notebook book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Romance</p><h3>The Notebook</h3><p class="book-author">J.K. Rowling</p><p class="book-description">A Love Story That Will Touch Your Heart</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.40</strong></div><div class="price-line"><div><span class="sale-price">₹279</span><span class="old-price">₹349</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="31"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="Me Before You" data-author="Paulo Coelho" data-category="Romance" data-language="English" data-rating="4.50" data-price="339.1500" data-popular="70">
+                        <div class="cover-wrap"><a href="/book/32" class="cover-link"><img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=300&amp;h=400&amp;fit=crop" alt="Me Before You book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Romance</p><h3>Me Before You</h3><p class="book-author">Paulo Coelho</p><p class="book-description">A Heartbreaking Love Story</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.50</strong></div><div class="price-line"><div><span class="sale-price">₹339</span><span class="old-price">₹399</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="32"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="The Fault in Our Stars" data-author="J.K. Rowling" data-category="Romance" data-language="English" data-rating="4.60" data-price="279.2000" data-popular="11">
+                        <div class="cover-wrap"><a href="/book/33" class="cover-link"><img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=300&amp;h=400&amp;fit=crop" alt="The Fault in Our Stars book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Romance</p><h3>The Fault in Our Stars</h3><p class="book-author">J.K. Rowling</p><p class="book-description">A Beautiful Story of Love and Loss</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.60</strong></div><div class="price-line"><div><span class="sale-price">₹279</span><span class="old-price">₹349</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="33"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="Love in the Time of Cholera" data-author="Paulo Coelho" data-category="Romance" data-language="English" data-rating="4.30" data-price="404.1000" data-popular="26">
+                        <div class="cover-wrap"><a href="/book/34" class="cover-link"><img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300&amp;h=400&amp;fit=crop" alt="Love in the Time of Cholera book cover" loading="lazy"></a><span class="discount-badge">-10%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Romance</p><h3>Love in the Time of Cholera</h3><p class="book-author">Paulo Coelho</p><p class="book-description">A Masterpiece by Gabriel Garcia Marquez</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.30</strong></div><div class="price-line"><div><span class="sale-price">₹404</span><span class="old-price">₹449</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="34"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="The Little Prince" data-author="Paulo Coelho" data-category="Children" data-language="English" data-rating="4.80" data-price="239.2000" data-popular="23">
+                        <div class="cover-wrap"><a href="/book/35" class="cover-link"><img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&amp;h=400&amp;fit=crop" alt="The Little Prince book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Children</p><h3>The Little Prince</h3><p class="book-author">Paulo Coelho</p><p class="book-description">A Timeless Tale for All Ages</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.80</strong></div><div class="price-line"><div><span class="sale-price">₹239</span><span class="old-price">₹299</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="35"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="Charlotte&#39;s Web" data-author="J.K. Rowling" data-category="Children" data-language="English" data-rating="4.70" data-price="296.6500" data-popular="2">
+                        <div class="cover-wrap"><a href="/book/36" class="cover-link"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&amp;h=400&amp;fit=crop" alt="Charlotte&#39;s Web book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Children</p><h3>Charlotte&#39;s Web</h3><p class="book-author">J.K. Rowling</p><p class="book-description">A Classic Children&#39;s Novel</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.70</strong></div><div class="price-line"><div><span class="sale-price">₹297</span><span class="old-price">₹349</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="36"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="Matilda" data-author="J.K. Rowling" data-category="Children" data-language="English" data-rating="4.60" data-price="224.2500" data-popular="27">
+                        <div class="cover-wrap"><a href="/book/37" class="cover-link"><img src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=300&amp;h=400&amp;fit=crop" alt="Matilda book cover" loading="lazy"></a><span class="discount-badge">-25%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Children</p><h3>Matilda</h3><p class="book-author">J.K. Rowling</p><p class="book-description">A Magical Story by Roald Dahl</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.60</strong></div><div class="price-line"><div><span class="sale-price">₹224</span><span class="old-price">₹299</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="37"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="The Giving Tree" data-author="Paulo Coelho" data-category="Children" data-language="English" data-rating="4.90" data-price="174.3000" data-popular="91">
+                        <div class="cover-wrap"><a href="/book/38" class="cover-link"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=300&amp;h=400&amp;fit=crop" alt="The Giving Tree book cover" loading="lazy"></a><span class="discount-badge">-30%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Children</p><h3>The Giving Tree</h3><p class="book-author">Paulo Coelho</p><p class="book-description">A Beautiful Story of Giving</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.90</strong></div><div class="price-line"><div><span class="sale-price">₹174</span><span class="old-price">₹249</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="38"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="Alice&#39;s Adventures in Wonderland" data-author="J.K. Rowling" data-category="Children" data-language="English" data-rating="4.50" data-price="279.2000" data-popular="2">
+                        <div class="cover-wrap"><a href="/book/39" class="cover-link"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=300&amp;h=400&amp;fit=crop" alt="Alice&#39;s Adventures in Wonderland book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Children</p><h3>Alice&#39;s Adventures in Wonderland</h3><p class="book-author">J.K. Rowling</p><p class="book-description">A Fantasy Classic for Children</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.50</strong></div><div class="price-line"><div><span class="sale-price">₹279</span><span class="old-price">₹349</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="39"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="Watchmen" data-author="J.R.R. Tolkien" data-category="Comics" data-language="English" data-rating="4.80" data-price="509.1500" data-popular="3">
+                        <div class="cover-wrap"><a href="/book/40" class="cover-link"><img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&amp;h=400&amp;fit=crop" alt="Watchmen book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Comics</p><h3>Watchmen</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">A Groundbreaking Graphic Novel</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.80</strong></div><div class="price-line"><div><span class="sale-price">₹509</span><span class="old-price">₹599</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="40"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="Maus" data-author="J.R.R. Tolkien" data-category="Comics" data-language="English" data-rating="4.70" data-price="439.2000" data-popular="8">
+                        <div class="cover-wrap"><a href="/book/41" class="cover-link"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&amp;h=400&amp;fit=crop" alt="Maus book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Comics</p><h3>Maus</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">A Survivor&#39;s Tale in Graphic Form</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.70</strong></div><div class="price-line"><div><span class="sale-price">₹439</span><span class="old-price">₹549</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="41"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="Persepolis" data-author="J.R.R. Tolkien" data-category="Comics" data-language="English" data-rating="4.60" data-price="449.1000" data-popular="56">
+                        <div class="cover-wrap"><a href="/book/42" class="cover-link"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&amp;h=400&amp;fit=crop" alt="Persepolis book cover" loading="lazy"></a><span class="discount-badge">-10%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Comics</p><h3>Persepolis</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">A Graphic Memoir of Growing Up in Iran</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.60</strong></div><div class="price-line"><div><span class="sale-price">₹449</span><span class="old-price">₹499</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="42"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="Batman: The Dark Knight Returns" data-author="J.R.R. Tolkien" data-category="Comics" data-language="English" data-rating="4.50" data-price="551.6500" data-popular="61">
+                        <div class="cover-wrap"><a href="/book/43" class="cover-link"><img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=300&amp;h=400&amp;fit=crop" alt="Batman: The Dark Knight Returns book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Comics</p><h3>Batman: The Dark Knight Returns</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">A Classic Batman Story</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.50</strong></div><div class="price-line"><div><span class="sale-price">₹552</span><span class="old-price">₹649</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="43"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="Saga" data-author="J.R.R. Tolkien" data-category="Comics" data-language="English" data-rating="4.40" data-price="479.2000" data-popular="48">
+                        <div class="cover-wrap"><a href="/book/44" class="cover-link"><img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=300&amp;h=400&amp;fit=crop" alt="Saga book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Comics</p><h3>Saga</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">An Epic Space Opera in Comics</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.40</strong></div><div class="price-line"><div><span class="sale-price">₹479</span><span class="old-price">₹599</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="44"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="A Brief History of Time" data-author="J.R.R. Tolkien" data-category="Science" data-language="English" data-rating="4.80" data-price="359.2000" data-popular="40">
+                        <div class="cover-wrap"><a href="/book/45" class="cover-link"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&amp;h=400&amp;fit=crop" alt="A Brief History of Time book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Science</p><h3>A Brief History of Time</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">Stephen Hawking&#39;s Masterpiece</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.80</strong></div><div class="price-line"><div><span class="sale-price">₹359</span><span class="old-price">₹449</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="45"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="Cosmos" data-author="J.R.R. Tolkien" data-category="Science" data-language="English" data-rating="4.70" data-price="424.1500" data-popular="39">
+                        <div class="cover-wrap"><a href="/book/46" class="cover-link"><img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=300&amp;h=400&amp;fit=crop" alt="Cosmos book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Science</p><h3>Cosmos</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">A Personal Voyage by Carl Sagan</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.70</strong></div><div class="price-line"><div><span class="sale-price">₹424</span><span class="old-price">₹499</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="46"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="The Selfish Gene" data-author="J.R.R. Tolkien" data-category="Science" data-language="English" data-rating="4.50" data-price="404.1000" data-popular="70">
+                        <div class="cover-wrap"><a href="/book/47" class="cover-link"><img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=300&amp;h=400&amp;fit=crop" alt="The Selfish Gene book cover" loading="lazy"></a><span class="discount-badge">-10%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Science</p><h3>The Selfish Gene</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">Richard Dawkins on Evolution</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.50</strong></div><div class="price-line"><div><span class="sale-price">₹404</span><span class="old-price">₹449</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="47"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="The Gene" data-author="J.R.R. Tolkien" data-category="Science" data-language="English" data-rating="4.60" data-price="479.2000" data-popular="45">
+                        <div class="cover-wrap"><a href="/book/48" class="cover-link"><img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300&amp;h=400&amp;fit=crop" alt="The Gene book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Science</p><h3>The Gene</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">An Intimate History by Siddhartha Mukherjee</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.60</strong></div><div class="price-line"><div><span class="sale-price">₹479</span><span class="old-price">₹599</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="48"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="Astrophysics for People in a Hurry" data-author="J.R.R. Tolkien" data-category="Science" data-language="English" data-rating="4.40" data-price="299.2500" data-popular="50">
+                        <div class="cover-wrap"><a href="/book/49" class="cover-link"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=300&amp;h=400&amp;fit=crop" alt="Astrophysics for People in a Hurry book cover" loading="lazy"></a><span class="discount-badge">-25%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Science</p><h3>Astrophysics for People in a Hurry</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">Neil deGrasse Tyson&#39;s Guide</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.40</strong></div><div class="price-line"><div><span class="sale-price">₹299</span><span class="old-price">₹399</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="49"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="Start with Why" data-author="James Clear" data-category="Business" data-language="English" data-rating="4.50" data-price="381.6500" data-popular="51">
+                        <div class="cover-wrap"><a href="/book/50" class="cover-link"><img src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=300&amp;h=400&amp;fit=crop" alt="Start with Why book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Business</p><h3>Start with Why</h3><p class="book-author">James Clear</p><p class="book-description">How Great Leaders Inspire Action</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.50</strong></div><div class="price-line"><div><span class="sale-price">₹382</span><span class="old-price">₹449</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="50"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="The 4-Hour Workweek" data-author="Robert Kiyosaki" data-category="Business" data-language="English" data-rating="4.30" data-price="319.2000" data-popular="9">
+                        <div class="cover-wrap"><a href="/book/51" class="cover-link"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=300&amp;h=400&amp;fit=crop" alt="The 4-Hour Workweek book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Business</p><h3>The 4-Hour Workweek</h3><p class="book-author">Robert Kiyosaki</p><p class="book-description">Escape 9-5, Live Anywhere</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.30</strong></div><div class="price-line"><div><span class="sale-price">₹319</span><span class="old-price">₹399</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="51"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="Crushing It!" data-author="Morgan Housel" data-category="Business" data-language="English" data-rating="4.40" data-price="404.1000" data-popular="91">
+                        <div class="cover-wrap"><a href="/book/52" class="cover-link"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=300&amp;h=400&amp;fit=crop" alt="Crushing It! book cover" loading="lazy"></a><span class="discount-badge">-10%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Business</p><h3>Crushing It!</h3><p class="book-author">Morgan Housel</p><p class="book-description">How Great Entrepreneurs Build Their Business</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.40</strong></div><div class="price-line"><div><span class="sale-price">₹404</span><span class="old-price">₹449</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="52"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="The Art of War" data-author="J.R.R. Tolkien" data-category="History" data-language="English" data-rating="4.60" data-price="174.3000" data-popular="45">
+                        <div class="cover-wrap"><a href="/book/53" class="cover-link"><img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=300&amp;h=400&amp;fit=crop" alt="The Art of War book cover" loading="lazy"></a><span class="discount-badge">-30%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">History</p><h3>The Art of War</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">Ancient Chinese Military Treatise</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.60</strong></div><div class="price-line"><div><span class="sale-price">₹174</span><span class="old-price">₹249</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="53"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="Meditations" data-author="J.R.R. Tolkien" data-category="Self Help" data-language="English" data-rating="4.70" data-price="224.2500" data-popular="44">
+                        <div class="cover-wrap"><a href="/book/54" class="cover-link"><img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&amp;h=400&amp;fit=crop" alt="Meditations book cover" loading="lazy"></a><span class="discount-badge">-25%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Self Help</p><h3>Meditations</h3><p class="book-author">J.R.R. Tolkien</p><p class="book-description">Philosophical Writings of Marcus Aurelius</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.70</strong></div><div class="price-line"><div><span class="sale-price">₹224</span><span class="old-price">₹299</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="54"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="Man&#39;s Search for Meaning" data-author="Ken Honda" data-category="Self Help" data-language="English" data-rating="4.80" data-price="296.6500" data-popular="30">
+                        <div class="cover-wrap"><a href="/book/55" class="cover-link"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&amp;h=400&amp;fit=crop" alt="Man&#39;s Search for Meaning book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Self Help</p><h3>Man&#39;s Search for Meaning</h3><p class="book-author">Ken Honda</p><p class="book-description">Finding Purpose in Suffering</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.80</strong></div><div class="price-line"><div><span class="sale-price">₹297</span><span class="old-price">₹349</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="55"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="210" data-title="The Four Agreements" data-author="Jay Shetty" data-category="Self Help" data-language="English" data-rating="4.50" data-price="239.2000" data-popular="65">
+                        <div class="cover-wrap"><a href="/book/56" class="cover-link"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&amp;h=400&amp;fit=crop" alt="The Four Agreements book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Self Help</p><h3>The Four Agreements</h3><p class="book-author">Jay Shetty</p><p class="book-description">Ancient Wisdom for Modern Life</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.50</strong></div><div class="price-line"><div><span class="sale-price">₹239</span><span class="old-price">₹299</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="56"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="0" data-title="You Are a Badass" data-author="Jay Shetty" data-category="Self Help" data-language="English" data-rating="4.40" data-price="314.1000" data-popular="94">
+                        <div class="cover-wrap"><a href="/book/57" class="cover-link"><img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=300&amp;h=400&amp;fit=crop" alt="You Are a Badass book cover" loading="lazy"></a><span class="discount-badge">-10%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Self Help</p><h3>You Are a Badass</h3><p class="book-author">Jay Shetty</p><p class="book-description">How to Stop Doubting Yourself</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.40</strong></div><div class="price-line"><div><span class="sale-price">₹314</span><span class="old-price">₹349</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="57"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="70" data-title="The Subtle Art of Not Giving a F*ck" data-author="Morgan Housel" data-category="Self Help" data-language="English" data-rating="4.30" data-price="339.1500" data-popular="94">
+                        <div class="cover-wrap"><a href="/book/58" class="cover-link"><img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=300&amp;h=400&amp;fit=crop" alt="The Subtle Art of Not Giving a F*ck book cover" loading="lazy"></a><span class="discount-badge">-15%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Self Help</p><h3>The Subtle Art of Not Giving a F*ck</h3><p class="book-author">Morgan Housel</p><p class="book-description">Counterintuitive Approach to Living</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.30</strong></div><div class="price-line"><div><span class="sale-price">₹339</span><span class="old-price">₹399</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="58"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                    <article class="catalog-card" data-aos="fade-up" data-aos-delay="140" data-title="Daring Greatly" data-author="Ken Honda" data-category="Self Help" data-language="English" data-rating="4.60" data-price="359.2000" data-popular="95">
+                        <div class="cover-wrap"><a href="/book/59" class="cover-link"><img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300&amp;h=400&amp;fit=crop" alt="Daring Greatly book cover" loading="lazy"></a><span class="discount-badge">-20%</span><button class="wishlist-btn" type="button" aria-label="Add to wishlist"><i class="far fa-heart"></i></button><button class="quick-view-btn" type="button"><i class="fas fa-eye"></i> Quick view</button></div>
+                        <div class="catalog-content"><p class="book-category">Self Help</p><h3>Daring Greatly</h3><p class="book-author">Ken Honda</p><p class="book-description">How the Courage to Be Vulnerable Transforms</p><div class="rating-line"><span class="stars" aria-label="Book rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span><strong>4.60</strong></div><div class="price-line"><div><span class="sale-price">₹359</span><span class="old-price">₹449</span></div><span class="stock-note">In stock</span></div><form action="/cart/add" method="post"><input type="hidden" name="bookId" value="59"><button type="submit" class="add-cart-btn"><i class="fas fa-shopping-bag"></i> Add to cart</button></form></div>
+                    </article>
+                </div>
+                <p id="emptyState" class="empty-state d-none">No books match these filters. Try widening your search.</p>
+                <nav class="catalog-pagination" aria-label="Books pagination"><button type="button" data-page="previous" aria-label="Previous page"><i class="fas fa-arrow-left"></i> Previous</button><div class="page-numbers"><button type="button" data-page="1" class="active">1</button><button type="button" data-page="2">2</button><button type="button" data-page="3">3</button></div><button type="button" data-page="next" aria-label="Next page">Next <i class="fas fa-arrow-right"></i></button></nav>
+            </section>
+        </div>
+    </main>
+    <footer class="site-footer" data-aos="fade-up">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <h4 class="mb-3" style="font-family: 'Playfair Display', serif;">
+                    <i class="fas fa-book-open me-2"></i>BookNest
+                </h4>
+                <p class="text-white-50">Your premium destination for discovering and purchasing the finest books. Explore our curated collection and find your next great read.</p>
+                <div class="social-icons mt-3">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="/">Home</a></li>
+                    <li class="mb-2"><a href="/books">Books</a></li>
+                    <li class="mb-2"><a href="/categories">Categories</a></li>
+                    <li class="mb-2"><a href="/about">About Us</a></li>
+                    <li class="mb-2"><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="mb-3">Categories</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#">Fiction</a></li>
+                    <li class="mb-2"><a href="#">Business</a></li>
+                    <li class="mb-2"><a href="#">Technology</a></li>
+                    <li class="mb-2"><a href="#">Self Help</a></li>
+                    <li class="mb-2"><a href="#">Children</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="mb-3">Customer Support</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#">FAQ</a></li>
+                    <li class="mb-2"><a href="#">Shipping Info</a></li>
+                    <li class="mb-2"><a href="#">Returns</a></li>
+                    <li class="mb-2"><a href="#">Privacy Policy</a></li>
+                    <li class="mb-2"><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="mb-3">Contact Us</h5>
+                <ul class="list-unstyled text-white-50">
+                    <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>123 Book Street, India</li>
+                    <li class="mb-2"><i class="fas fa-phone me-2"></i>+91 98765 43210</li>
+                    <li class="mb-2"><i class="fas fa-envelope me-2"></i>info@booknest.com</li>
+                </ul>
+            </div>
+        </div>
+        
+        <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+        
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="mb-0 text-white-50">&copy; 2024 BookNest. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <p class="mb-0 text-white-50">Designed with <i class="fas fa-heart text-danger"></i> for Book Lovers</p>
+            </div>
+        </div>
+    </div>
+</footer>
+    <link rel="stylesheet" href="/css/books.css"><script src="/js/books.js"></script>
+</body>
+</html>
+

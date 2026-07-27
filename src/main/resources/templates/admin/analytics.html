@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}">
+    <title>Analytics & Reports - BookNest Admin</title>
+</head>
+<body class="bg-light">
+    <!-- Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .admin-sidebar {
+            background-color: var(--primary, #1a1a1a);
+            min-height: 100vh;
+        }
+        .admin-sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            font-weight: 500;
+            border-radius: 8px;
+            margin-bottom: 4px;
+        }
+        .admin-sidebar .nav-link:hover,
+        .admin-sidebar .nav-link.active {
+            color: #ffffff;
+            background-color: rgba(255,255,255,0.15);
+        }
+    </style>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 admin-sidebar p-3">
+                <div class="d-flex flex-column">
+                    <a th:href="@{/admin/dashboard}" class="text-white text-decoration-none mb-4 ps-2">
+                        <h4 class="fw-bold m-0" style="font-family: 'Playfair Display', serif;">
+                            <i class="fas fa-book-open me-2 text-warning"></i>BookNest
+                        </h4>
+                        <small class="text-muted">Admin Control Panel</small>
+                    </a>
+                    
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a th:href="@{/admin/dashboard}" class="nav-link">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/books}" class="nav-link">
+                                <i class="fas fa-book me-2"></i>Books
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/categories}" class="nav-link">
+                                <i class="fas fa-layer-group me-2"></i>Categories
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/users}" class="nav-link">
+                                <i class="fas fa-users me-2"></i>Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/orders}" class="nav-link">
+                                <i class="fas fa-shopping-bag me-2"></i>Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/analytics}" class="nav-link active">
+                                <i class="fas fa-chart-line me-2"></i>Analytics
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/reviews}" class="nav-link">
+                                <i class="fas fa-star me-2"></i>Reviews
+                            </a>
+                        </li>
+                        <hr class="text-secondary my-3">
+                        <li class="nav-item">
+                            <a th:href="@{/}" class="nav-link text-warning">
+                                <i class="fas fa-external-link-alt me-2"></i>Back to Site
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">
+                    <div>
+                        <h3 class="fw-bold mb-0 text-dark" style="font-family: 'Playfair Display', serif;">Sales & Revenue Analytics</h3>
+                        <small class="text-muted">Business performance insights and top-selling categories</small>
+                    </div>
+                </div>
+
+                <!-- Stats summary row -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm rounded-4 text-center p-3">
+                            <small class="text-muted text-uppercase fw-bold">Total Revenue</small>
+                            <h3 class="fw-bold text-success mt-2 mb-0" th:text="'₹' + ${#numbers.formatDecimal(totalRevenue, 1, 'COMMA', 2, 'POINT')}">₹0.00</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm rounded-4 text-center p-3">
+                            <small class="text-muted text-uppercase fw-bold">Delivered Orders</small>
+                            <h3 class="fw-bold text-primary mt-2 mb-0" th:text="${completedOrders}">0</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm rounded-4 text-center p-3">
+                            <small class="text-muted text-uppercase fw-bold">Pending Orders</small>
+                            <h3 class="fw-bold text-warning mt-2 mb-0" th:text="${pendingOrders}">0</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm rounded-4 text-center p-3">
+                            <small class="text-muted text-uppercase fw-bold">Cancelled Orders</small>
+                            <h3 class="fw-bold text-danger mt-2 mb-0" th:text="${cancelledOrders}">0</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3" style="font-family: 'Playfair Display', serif;">
+                                    <i class="fas fa-chart-area me-2 text-primary"></i>Revenue Trend
+                                </h5>
+                                <canvas id="revenueChart" height="150"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card border-0 shadow-sm rounded-4">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3" style="font-family: 'Playfair Display', serif;">
+                                    <i class="fas fa-chart-pie me-2 text-primary"></i>Order Distribution
+                                </h5>
+                                <canvas id="orderStatusChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tables Row -->
+                <div class="row g-4">
+                    <!-- Top Selling Books -->
+                    <div class="col-lg-7">
+                        <div class="card border-0 shadow-sm rounded-4">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3" style="font-family: 'Playfair Display', serif;">
+                                    <i class="fas fa-trophy me-2 text-warning"></i>Top Selling Books
+                                </h5>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Book</th>
+                                                <th>Category</th>
+                                                <th>Price</th>
+                                                <th>Units Sold</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="book : ${topSellingBooks}">
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img th:src="${book.imageUrl}" style="width: 36px; height: 50px; object-fit: cover;" class="rounded me-2">
+                                                        <div>
+                                                            <div class="fw-bold text-dark text-truncate" style="max-width: 180px;" th:text="${book.title}">Book Title</div>
+                                                            <small class="text-muted" th:text="${book.author != null ? book.author.name : 'Unknown'}">Author</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td th:text="${book.category != null ? book.category.name : 'N/A'}">Category</td>
+                                                <td class="fw-bold text-dark" th:text="'₹' + ${book.price}">₹0</td>
+                                                <td>
+                                                    <span class="badge bg-success rounded-pill px-3" th:text="${book.soldCount != null ? book.soldCount : 0} + ' sold'">0 sold</span>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${topSellingBooks.empty}">
+                                                <td colspan="4" class="text-center py-4 text-muted">No sales recorded yet.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Breakdown -->
+                    <div class="col-lg-5">
+                        <div class="card border-0 shadow-sm rounded-4">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3" style="font-family: 'Playfair Display', serif;">
+                                    <i class="fas fa-list-check me-2 text-primary"></i>Category Breakdown
+                                </h5>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Category</th>
+                                                <th>Total Books</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="entry : ${categoryBookCounts}">
+                                                <td class="fw-bold text-dark" th:text="${entry.key}">Category Name</td>
+                                                <td>
+                                                    <span class="badge bg-primary rounded-pill px-3" th:text="${entry.value} + ' books'">0 books</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /* Dynamic Chart.js Script */
+        const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctxRevenue, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Revenue (₹)',
+                    data: [12000, 19000, 15000, 28000, 24000, 32000, [[${totalRevenue}]]],
+                    borderColor: '#2b580c',
+                    backgroundColor: 'rgba(43, 88, 12, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true }
+                }
+            }
+        });
+
+        const ctxStatus = document.getElementById('orderStatusChart').getContext('2d');
+        new Chart(ctxStatus, {
+            type: 'doughnut',
+            data: {
+                labels: ['Delivered', 'Pending', 'Cancelled'],
+                datasets: [{
+                    data: [[[${completedOrders}]], [[${pendingOrders}]], [[${cancelledOrders}]]],
+                    backgroundColor: ['#198754', '#ffc107', '#dc3545']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    </script>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

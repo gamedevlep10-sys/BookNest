@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: navbar}"></div>
+
+    <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/cart}">Cart</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h1 class="section-title">Checkout</h1>
+            <p class="text-muted">Complete your order</p>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i><span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <form th:action="@{/checkout/place-order}" method="post" id="checkoutForm">
+            <div class="row" data-aos="fade-up">
+                <div class="col-lg-8">
+                    <!-- Shipping Address -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4" style="font-family: 'Playfair Display', serif;">
+                                <i class="fas fa-map-marker-alt me-2"></i>Shipping Address
+                            </h4>
+
+                            <div th:if="${addresses != null and !addresses.empty}">
+                                <div class="row g-3">
+                                    <div class="col-md-6" th:each="address : ${addresses}">
+                                        <div class="card border-2 h-100" 
+                                             th:classappend="${address.defaultAddress} ? 'border-primary' : ''">
+                                            <div class="card-body">
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="radio" 
+                                                           name="addressId" th:id="'addr-' + ${address.id}" 
+                                                           th:value="${address.id}" 
+                                                           th:checked="${address.defaultAddress or addressStat.first}">
+                                                    <label class="form-check-label fw-bold" th:for="'addr-' + ${address.id}">
+                                                        Saved Address
+                                                        <span th:if="${address.defaultAddress}" class="badge bg-primary ms-1">Default</span>
+                                                    </label>
+                                                </div>
+                                                <p class="mb-1 text-dark" th:text="${address.addressLine1}"></p>
+                                                <p class="mb-1 text-muted small" th:if="${address.addressLine2 != null and !address.addressLine2.empty}" th:text="${address.addressLine2}"></p>
+                                                <p class="mb-1 text-muted small" th:text="${address.city} + ', ' + ${address.state} + ' - ' + ${address.postalCode}"></p>
+                                                <p class="mb-1 text-muted small" th:text="${address.country}"></p>
+                                                <p class="mb-0 text-muted small" th:text="'Phone: ' + ${address.phone}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <a th:href="@{/profile/address/add}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-plus me-1"></i>Add Saved Address
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div th:if="${addresses == null or addresses.empty}">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label fw-bold">Address Line 1 *</label>
+                                        <input type="text" name="addressLine1" class="form-control" placeholder="House/Flat No., Building Name, Street" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Address Line 2 (Optional)</label>
+                                        <input type="text" name="addressLine2" class="form-control" placeholder="Landmark, Area">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">City *</label>
+                                        <input type="text" name="city" class="form-control" placeholder="City" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">State *</label>
+                                        <input type="text" name="state" class="form-control" placeholder="State" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">Postal Code *</label>
+                                        <input type="text" name="postalCode" class="form-control" placeholder="PIN / Zip code" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">Country *</label>
+                                        <input type="text" name="country" class="form-control" value="India" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label class="form-label fw-bold"><i class="fas fa-phone me-2"></i>Contact Phone Number *</label>
+                                <input type="tel" name="phone" class="form-control" 
+                                       th:value="${defaultAddress != null ? defaultAddress.phone : (currentUser != null ? currentUser.phone : '')}" 
+                                       placeholder="10-digit mobile number" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Options -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4" style="font-family: 'Playfair Display', serif;">
+                                <i class="fas fa-shipping-fast me-2"></i>Delivery Options
+                            </h4>
+
+                            <div class="form-check p-3 border rounded mb-3">
+                                <input class="form-check-input" type="radio" name="deliveryOption" id="deliveryStandard" value="STANDARD" checked>
+                                <label class="form-check-label w-100" for="deliveryStandard">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong class="d-block">Standard Delivery</strong>
+                                            <small class="text-muted">Delivered in 3-5 Business Days</small>
+                                        </div>
+                                        <span class="badge bg-success">FREE</span>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="form-check p-3 border rounded">
+                                <input class="form-check-input" type="radio" name="deliveryOption" id="deliveryExpress" value="EXPRESS">
+                                <label class="form-check-label w-100" for="deliveryExpress">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong class="d-block">Express Delivery</strong>
+                                            <small class="text-muted">Delivered in 1-2 Business Days</small>
+                                        </div>
+                                        <span class="fw-bold" style="color: var(--primary);">₹99.00</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4" style="font-family: 'Playfair Display', serif;">
+                                <i class="fas fa-credit-card me-2"></i>Payment Method
+                            </h4>
+
+                            <div class="form-check p-3 border rounded mb-3">
+                                <input class="form-check-input" type="radio" name="paymentMethod" 
+                                       id="cod" value="COD" checked required>
+                                <label class="form-check-label w-100" for="cod">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-money-bill-wave fa-lg me-3 text-success"></i>
+                                        <div>
+                                            <strong class="d-block">Cash on Delivery (COD)</strong>
+                                            <small class="text-muted">Pay in cash upon delivery</small>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="form-check p-3 border rounded mb-3">
+                                <input class="form-check-input" type="radio" name="paymentMethod" 
+                                       id="card" value="CARD">
+                                <label class="form-check-label w-100" for="card">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-credit-card fa-lg me-3 text-primary"></i>
+                                        <div>
+                                            <strong class="d-block">Credit / Debit Card (Online Payment)</strong>
+                                            <small class="text-muted">Instant mock card processing</small>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div id="cardFields" class="p-3 bg-light rounded mb-3 d-none">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label small fw-bold">Card Number</label>
+                                        <input type="text" class="form-control form-control-sm" placeholder="4532 •••• •••• 8892">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small fw-bold">Expiry Date</label>
+                                        <input type="text" class="form-control form-control-sm" placeholder="MM/YY">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small fw-bold">CVV</label>
+                                        <input type="password" class="form-control form-control-sm" placeholder="•••" maxlength="3">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-check p-3 border rounded">
+                                <input class="form-check-input" type="radio" name="paymentMethod" 
+                                       id="upi" value="UPI">
+                                <label class="form-check-label w-100" for="upi">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-mobile-alt fa-lg me-3 text-warning"></i>
+                                        <div>
+                                            <strong class="d-block">UPI (Google Pay / PhonePe / Paytm)</strong>
+                                            <small class="text-muted">Instant mock UPI payment</small>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div id="upiFields" class="p-3 bg-light rounded mt-3 d-none">
+                                <label class="form-label small fw-bold">Virtual Payment Address (UPI ID)</label>
+                                <input type="text" class="form-control form-control-sm" placeholder="username@upi">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Notes -->
+                    <div class="card border-0 shadow-sm mb-4 mb-lg-0">
+                        <div class="card-body">
+                            <h4 class="card-title mb-3" style="font-family: 'Playfair Display', serif;">
+                                <i class="fas fa-sticky-note me-2"></i>Order Notes (Optional)
+                            </h4>
+                            <textarea class="form-control" name="notes" rows="2" 
+                                      placeholder="Any special instructions for your order delivery..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm sticky-top" style="top: 100px;">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4" style="font-family: 'Playfair Display', serif;">
+                                Order Summary
+                            </h4>
+
+                            <div class="table-responsive mb-3" style="max-height: 250px; overflow-y: auto;">
+                                <table class="table table-sm table-borderless align-middle mb-0">
+                                    <tbody>
+                                        <tr th:each="item : ${cart.cartItems}">
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img th:src="${item.book.imageUrl}" 
+                                                         alt="Book" style="width: 40px; height: 50px; object-fit: cover;" 
+                                                         class="rounded me-2">
+                                                    <div>
+                                                        <small class="fw-bold d-block text-truncate" style="max-width: 130px;" th:text="${item.book.title}"></small>
+                                                        <small class="text-muted" th:text="'Qty: ' + ${item.quantity}"></small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-end fw-bold" th:text="'₹' + ${item.totalPrice}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Subtotal</span>
+                                <span class="fw-bold" th:text="'₹' + ${cart.totalAmount}" id="subtotalVal" th:data-subtotal="${cart.totalAmount}"></span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Shipping</span>
+                                <span id="shippingDisplay" class="text-success fw-bold">FREE</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Tax</span>
+                                <span class="text-muted">Included</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mb-4">
+                                <span class="fw-bold fs-5">Grand Total</span>
+                                <span class="fw-bold price fs-4" id="grandTotalDisplay" th:text="'₹' + ${cart.totalAmount}"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 btn-lg shadow-sm">
+                                <i class="fas fa-lock me-2"></i>Place Order
+                            </button>
+
+                            <div class="mt-3 text-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-shield-alt me-1 text-success"></i>100% Encrypted & Secure Checkout
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const subtotalElem = document.getElementById('subtotalVal');
+            const subtotal = parseFloat(subtotalElem.getAttribute('data-subtotal')) || 0;
+            const shippingDisplay = document.getElementById('shippingDisplay');
+            const grandTotalDisplay = document.getElementById('grandTotalDisplay');
+            const deliveryStandard = document.getElementById('deliveryStandard');
+            const deliveryExpress = document.getElementById('deliveryExpress');
+
+            function updateTotal() {
+                let shipping = 0;
+                if (deliveryExpress && deliveryExpress.checked) {
+                    shipping = 99;
+                    shippingDisplay.textContent = '₹99.00';
+                    shippingDisplay.className = 'fw-bold text-dark';
+                } else {
+                    shippingDisplay.textContent = 'FREE';
+                    shippingDisplay.className = 'fw-bold text-success';
+                }
+                const total = subtotal + shipping;
+                grandTotalDisplay.textContent = '₹' + total.toFixed(2);
+            }
+
+            if (deliveryStandard) deliveryStandard.addEventListener('change', updateTotal);
+            if (deliveryExpress) deliveryExpress.addEventListener('change', updateTotal);
+
+            const codRadio = document.getElementById('cod');
+            const cardRadio = document.getElementById('card');
+            const upiRadio = document.getElementById('upi');
+            const cardFields = document.getElementById('cardFields');
+            const upiFields = document.getElementById('upiFields');
+
+            function updatePaymentFields() {
+                if (cardRadio && cardRadio.checked) {
+                    cardFields.classList.remove('d-none');
+                    upiFields.classList.add('d-none');
+                } else if (upiRadio && upiRadio.checked) {
+                    upiFields.classList.remove('d-none');
+                    cardFields.classList.add('d-none');
+                } else {
+                    cardFields.classList.add('d-none');
+                    upiFields.classList.add('d-none');
+                }
+            }
+
+            if (codRadio) codRadio.addEventListener('change', updatePaymentFields);
+            if (cardRadio) cardRadio.addEventListener('change', updatePaymentFields);
+            if (upiRadio) upiRadio.addEventListener('change', updatePaymentFields);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}">
+    <title th:text="${book.id} ? 'Edit Book - BookNest Admin' : 'Add Book - BookNest Admin'">Book Form - BookNest</title>
+</head>
+<body class="bg-light">
+    <style>
+        .admin-sidebar {
+            background-color: var(--primary, #1a1a1a);
+            min-height: 100vh;
+        }
+        .admin-sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            font-weight: 500;
+            border-radius: 8px;
+            margin-bottom: 4px;
+        }
+        .admin-sidebar .nav-link:hover,
+        .admin-sidebar .nav-link.active {
+            color: #ffffff;
+            background-color: rgba(255,255,255,0.15);
+        }
+    </style>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 admin-sidebar p-3">
+                <div class="d-flex flex-column">
+                    <a th:href="@{/admin/dashboard}" class="text-white text-decoration-none mb-4 ps-2">
+                        <h4 class="fw-bold m-0" style="font-family: 'Playfair Display', serif;">
+                            <i class="fas fa-book-open me-2 text-warning"></i>BookNest
+                        </h4>
+                        <small class="text-muted">Admin Control Panel</small>
+                    </a>
+                    
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a th:href="@{/admin/dashboard}" class="nav-link">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/books}" class="nav-link active">
+                                <i class="fas fa-book me-2"></i>Books
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/categories}" class="nav-link">
+                                <i class="fas fa-layer-group me-2"></i>Categories
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/users}" class="nav-link">
+                                <i class="fas fa-users me-2"></i>Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/orders}" class="nav-link">
+                                <i class="fas fa-shopping-bag me-2"></i>Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/analytics}" class="nav-link">
+                                <i class="fas fa-chart-line me-2"></i>Analytics
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/reviews}" class="nav-link">
+                                <i class="fas fa-star me-2"></i>Reviews
+                            </a>
+                        </li>
+                        <hr class="text-secondary my-3">
+                        <li class="nav-item">
+                            <a th:href="@{/}" class="nav-link text-warning">
+                                <i class="fas fa-external-link-alt me-2"></i>Back to Site
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">
+                    <div>
+                        <h3 class="fw-bold mb-0 text-dark" style="font-family: 'Playfair Display', serif;" th:text="${book.id} ? 'Edit Book' : 'Add New Book'">Add Book</h3>
+                        <small class="text-muted">Fill out book attributes, pricing, stock, and cover image</small>
+                    </div>
+                    <a th:href="@{/admin/books}" class="btn btn-outline-secondary rounded-pill px-4">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Books
+                    </a>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <form th:action="@{/admin/books/save}" method="post" enctype="multipart/form-data" th:object="${book}">
+                            <input type="hidden" th:field="*{id}" th:if="${book.id != null}">
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Title</label>
+                                    <input type="text" class="form-control rounded-3" th:field="*{title}" placeholder="e.g. Atomic Habits" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">ISBN</label>
+                                    <input type="text" class="form-control rounded-3" th:field="*{isbn}" placeholder="e.g. ISBN-978123456" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Author</label>
+                                    <select class="form-select rounded-3" th:field="*{author.id}" required>
+                                        <option value="">Select Author</option>
+                                        <option th:each="author : ${authors}" 
+                                                th:value="${author.id}" 
+                                                th:text="${author.name}"
+                                                th:selected="${book.author != null and book.author.id == author.id}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Category</label>
+                                    <select class="form-select rounded-3" th:field="*{category.id}" required>
+                                        <option value="">Select Category</option>
+                                        <option th:each="category : ${categories}" 
+                                                th:value="${category.id}" 
+                                                th:text="${category.name}"
+                                                th:selected="${book.category != null and book.category.id == category.id}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Price (₹)</label>
+                                    <input type="number" class="form-control rounded-3" th:field="*{price}" step="0.01" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Discount (%)</label>
+                                    <input type="number" class="form-control rounded-3" th:field="*{discount}" step="0.01" value="0">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Stock Quantity</label>
+                                    <input type="number" class="form-control rounded-3" th:field="*{stock}" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Publisher</label>
+                                    <input type="text" class="form-control rounded-3" th:field="*{publisher}" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Language</label>
+                                    <input type="text" class="form-control rounded-3" th:field="*{language}" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Pages</label>
+                                    <input type="number" class="form-control rounded-3" th:field="*{pages}" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Upload Cover Image (File)</label>
+                                    <input type="file" name="imageFile" class="form-control rounded-3" accept="image/*">
+                                    <small class="text-muted">Accepted formats: JPG, PNG, WEBP.</small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Or Image URL</label>
+                                    <input type="text" class="form-control rounded-3" th:field="*{imageUrl}" placeholder="https://...">
+                                    <small class="text-muted">Leave URL empty if uploading a file.</small>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Description</label>
+                                <textarea class="form-control rounded-3" th:field="*{description}" rows="4" required></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold d-block">Flags & Visibility</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" th:field="*{featured}" id="featured">
+                                    <label class="form-check-label" for="featured">Featured Book</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" th:field="*{bestSeller}" id="bestSeller">
+                                    <label class="form-check-label" for="bestSeller">Best Seller</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" th:field="*{newArrival}" id="newArrival">
+                                    <label class="form-check-label" for="newArrival">New Arrival</label>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-3">
+                                <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                    <i class="fas fa-save me-2"></i>Save Book
+                                </button>
+                                <a th:href="@{/admin/books}" class="btn btn-light border rounded-pill px-4">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

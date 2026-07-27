@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: navbar}"></div>
+
+    <!-- Hero Header -->
+    <section class="py-5 text-center position-relative overflow-hidden mb-5" style="background: linear-gradient(135deg, var(--secondary) 0%, #e8e4df 100%); border-bottom: 1px solid var(--border);">
+        <div class="container" data-aos="fade-up">
+            <nav aria-label="breadcrumb" class="d-flex justify-content-center mb-3">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a th:href="@{/}" class="text-decoration-none text-muted"><i class="fas fa-home me-1"></i>Home</a></li>
+                    <li class="breadcrumb-item active text-primary font-weight-bold" aria-current="page">Categories</li>
+                </ol>
+            </nav>
+            <p class="section-subtitle mb-2">Explore Our Collection</p>
+            <h1 class="display-4 fw-bold mb-3" style="font-family: 'Playfair Display', serif; color: var(--primary);">Book Categories</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 650px;">
+                Discover books across diverse genres tailored to spark curiosity, entertain minds, and expand your horizons.
+            </p>
+        </div>
+    </section>
+
+    <!-- Categories Grid -->
+    <div class="container mb-5">
+        <!-- Error Flash Alert -->
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show mb-4 rounded-4 shadow-sm p-3" role="alert" data-aos="fade-down">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-circle fa-2x me-3" style="color: #dc3545;"></i>
+                <div>
+                    <strong class="d-block">Category Error</strong>
+                    <span th:text="${error}">Category not found.</span>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" th:each="category, iterStat : ${categories}" data-aos="fade-up" th:data-aos-delay="${(iterStat.index % 4) * 100}">
+                <div class="card h-100 border-0 shadow-sm category-card position-relative overflow-hidden transition-all">
+                    <!-- Image or Dynamic Icon Banner -->
+                    <div class="category-header text-center py-4 px-3" style="background: rgba(111, 78, 55, 0.04); border-bottom: 1px solid rgba(111, 78, 55, 0.08);">
+                        <div th:if="${category.imageUrl != null and !#strings.isEmpty(category.imageUrl)}" class="category-img-wrapper mb-2">
+                            <img th:src="${category.imageUrl}" th:alt="${category.name}" class="img-fluid rounded-3" style="height: 120px; object-fit: cover; width: 100%;">
+                        </div>
+                        <div th:unless="${category.imageUrl != null and !#strings.isEmpty(category.imageUrl)}" class="category-icon-wrapper mx-auto d-flex align-items-center justify-content-center rounded-circle shadow-sm" style="width: 80px; height: 80px; background: white;">
+                            <i class="fas fa-2x" style="color: var(--primary);"
+                               th:classappend="${#strings.equalsIgnoreCase(category.name, 'Fiction') ? 'fa-feather-alt' :
+                                               (#strings.equalsIgnoreCase(category.name, 'Business') ? 'fa-briefcase' :
+                                               (#strings.equalsIgnoreCase(category.name, 'Technology') or #strings.equalsIgnoreCase(category.name, 'Programming') ? 'fa-laptop-code' :
+                                               (#strings.equalsIgnoreCase(category.name, 'Self Help') ? 'fa-brain' :
+                                               (#strings.equalsIgnoreCase(category.name, 'History') ? 'fa-landmark' :
+                                               (#strings.equalsIgnoreCase(category.name, 'Romance') ? 'fa-heart' :
+                                               (#strings.equalsIgnoreCase(category.name, 'Children') ? 'fa-child' :
+                                               (#strings.equalsIgnoreCase(category.name, 'Science') ? 'fa-flask' : 'fa-book-open'))))))) }">
+                            </i>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body text-center d-flex flex-column p-4">
+                        <div class="mb-2">
+                            <span class="badge rounded-pill px-3 py-2" style="background-color: rgba(200, 155, 60, 0.15); color: #8a6519; font-weight: 600;">
+                                <i class="fas fa-book-open me-1"></i>
+                                <span th:text="${category.books != null ? category.books.size() : 0}">0</span> Books
+                            </span>
+                        </div>
+                        
+                        <h4 class="card-title fw-bold mb-2" style="font-family: 'Playfair Display', serif; color: var(--primary);" th:text="${category.name}">Category Name</h4>
+                        
+                        <p class="card-text text-muted small flex-grow-1 mb-4" th:text="${category.description != null ? category.description : 'Discover awesome titles in ' + category.name + '.'}">
+                            Short description of the category goes here.
+                        </p>
+                        
+                        <div class="mt-auto">
+                            <a th:href="@{/category/{id}(id=${category.id})}" class="btn btn-outline-primary btn-sm w-100 rounded-pill py-2">
+                                Explore Books <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

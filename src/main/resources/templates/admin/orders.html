@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}">
+    <title>Order Management - BookNest Admin</title>
+</head>
+<body class="bg-light">
+    <style>
+        .admin-sidebar {
+            background-color: var(--primary, #1a1a1a);
+            min-height: 100vh;
+        }
+        .admin-sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            font-weight: 500;
+            border-radius: 8px;
+            margin-bottom: 4px;
+        }
+        .admin-sidebar .nav-link:hover,
+        .admin-sidebar .nav-link.active {
+            color: #ffffff;
+            background-color: rgba(255,255,255,0.15);
+        }
+    </style>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 admin-sidebar p-3">
+                <div class="d-flex flex-column">
+                    <a th:href="@{/admin/dashboard}" class="text-white text-decoration-none mb-4 ps-2">
+                        <h4 class="fw-bold m-0" style="font-family: 'Playfair Display', serif;">
+                            <i class="fas fa-book-open me-2 text-warning"></i>BookNest
+                        </h4>
+                        <small class="text-muted">Admin Control Panel</small>
+                    </a>
+                    
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a th:href="@{/admin/dashboard}" class="nav-link">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/books}" class="nav-link">
+                                <i class="fas fa-book me-2"></i>Books
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/categories}" class="nav-link">
+                                <i class="fas fa-layer-group me-2"></i>Categories
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/users}" class="nav-link">
+                                <i class="fas fa-users me-2"></i>Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/orders}" class="nav-link active">
+                                <i class="fas fa-shopping-bag me-2"></i>Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/analytics}" class="nav-link">
+                                <i class="fas fa-chart-line me-2"></i>Analytics
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/admin/reviews}" class="nav-link">
+                                <i class="fas fa-star me-2"></i>Reviews
+                            </a>
+                        </li>
+                        <hr class="text-secondary my-3">
+                        <li class="nav-item">
+                            <a th:href="@{/}" class="nav-link text-warning">
+                                <i class="fas fa-external-link-alt me-2"></i>Back to Site
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">
+                    <div>
+                        <h3 class="fw-bold mb-0 text-dark" style="font-family: 'Playfair Display', serif;">Order Management</h3>
+                        <small class="text-muted">Track customer purchases, update order processing and shipment statuses</small>
+                    </div>
+                </div>
+
+                <!-- Status Filter Pills -->
+                <div class="d-flex gap-2 mb-4 flex-wrap">
+                    <a th:href="@{/admin/orders(status='ALL')}" class="btn btn-sm rounded-pill px-3"
+                       th:classappend="${currentStatus == 'ALL'} ? 'btn-primary' : 'btn-white border text-dark'">All Orders</a>
+                    <a th:href="@{/admin/orders(status='PENDING')}" class="btn btn-sm rounded-pill px-3"
+                       th:classappend="${currentStatus == 'PENDING'} ? 'btn-warning' : 'btn-white border text-dark'">Pending</a>
+                    <a th:href="@{/admin/orders(status='PROCESSING')}" class="btn btn-sm rounded-pill px-3"
+                       th:classappend="${currentStatus == 'PROCESSING'} ? 'btn-primary' : 'btn-white border text-dark'">Processing</a>
+                    <a th:href="@{/admin/orders(status='SHIPPED')}" class="btn btn-sm rounded-pill px-3"
+                       th:classappend="${currentStatus == 'SHIPPED'} ? 'btn-info' : 'btn-white border text-dark'">Shipped</a>
+                    <a th:href="@{/admin/orders(status='DELIVERED')}" class="btn btn-sm rounded-pill px-3"
+                       th:classappend="${currentStatus == 'DELIVERED'} ? 'btn-success' : 'btn-white border text-dark'">Delivered</a>
+                    <a th:href="@{/admin/orders(status='CANCELLED')}" class="btn btn-sm rounded-pill px-3"
+                       th:classappend="${currentStatus == 'CANCELLED'} ? 'btn-danger' : 'btn-white border text-dark'">Cancelled</a>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Total Amount</th>
+                                        <th>Order Status</th>
+                                        <th>Payment</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="order : ${orders}">
+                                        <td class="fw-bold" th:text="${order.orderNumber}">#ORD-000</td>
+                                        <td th:text="${order.user != null ? order.user.firstName + ' ' + order.user.lastName : 'Guest'}">John Doe</td>
+                                        <td class="fw-bold text-success" th:text="'₹' + ${order.finalAmount}">₹0</td>
+                                        <td>
+                                            <span class="badge rounded-pill" 
+                                                  th:classappend="${order.status == 'DELIVERED'} ? 'bg-success' : 
+                                                                 (${order.status == 'SHIPPED'} ? 'bg-info' : 
+                                                                 (${order.status == 'CANCELLED'} ? 'bg-danger' : 
+                                                                 (${order.status == 'PROCESSING'} ? 'bg-primary' : 'bg-warning text-dark')))"
+                                                  th:text="${order.status}">PENDING</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge rounded-pill"
+                                                  th:classappend="${order.paymentStatus == 'PAID' or order.paymentStatus == 'SUCCESS'} ? 'bg-success' : 'bg-secondary'"
+                                                  th:text="${order.paymentStatus}">PENDING</span>
+                                        </td>
+                                        <td class="text-muted fs-7" th:text="${#temporals.format(order.createdAt, 'MMM dd, yyyy HH:mm')}">Date</td>
+                                        <td>
+                                            <a th:href="@{/admin/orders/{id}(id=${order.id})}" 
+                                               class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                                <i class="fas fa-eye me-1"></i> Details
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${orders.empty}">
+                                        <td colspan="7" class="text-center py-4 text-muted">No orders found for this status.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

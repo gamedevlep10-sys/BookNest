@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: navbar}"></div>
+
+    <!-- Hero Banner -->
+    <section class="py-5 text-center position-relative overflow-hidden mb-5" style="background: linear-gradient(135deg, var(--secondary) 0%, #e8e4df 100%); border-bottom: 1px solid var(--border);">
+        <div class="container" data-aos="fade-up">
+            <nav aria-label="breadcrumb" class="d-flex justify-content-center mb-3">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a th:href="@{/}" class="text-decoration-none text-muted"><i class="fas fa-home me-1"></i>Home</a></li>
+                    <li class="breadcrumb-item active text-primary font-weight-bold" aria-current="page">Contact</li>
+                </ol>
+            </nav>
+            <p class="section-subtitle mb-2">Get In Touch</p>
+            <h1 class="display-4 fw-bold mb-3" style="font-family: 'Playfair Display', serif; color: var(--primary);">Contact BookNest</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 650px;">
+                Have questions about your order, book recommendations, or partnership inquiries? We are here to help you.
+            </p>
+        </div>
+    </section>
+
+    <div class="container mb-5">
+        <!-- Success Flash Alert -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show mb-4 rounded-4 shadow-sm p-3" role="alert" data-aos="fade-down">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle fa-2x me-3" style="color: #198754;"></i>
+                <div>
+                    <strong class="d-block">Message Sent Successfully!</strong>
+                    <span th:text="${success}">Thank you for contacting us.</span>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <!-- Contact Form Card -->
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="card border-0 shadow-sm h-100 rounded-4 p-3">
+                    <div class="card-body">
+                        <h3 class="card-title fw-bold mb-2" style="font-family: 'Playfair Display', serif; color: var(--primary);">
+                            Send Us a Message
+                        </h3>
+                        <p class="text-muted small mb-4">Fill out the form below and our team will get back to you within 24 hours.</p>
+
+                        <form th:action="@{/contact}" method="post">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-muted small">Your Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control bg-light border-start-0" name="name" placeholder="Enter full name" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-muted small">Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control bg-light border-start-0" name="email" placeholder="name@example.com" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-muted small">Subject</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="fas fa-tag"></i></span>
+                                    <input type="text" class="form-control bg-light border-start-0" name="subject" placeholder="How can we help?" required>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold text-muted small">Message</label>
+                                <textarea class="form-control bg-light" rows="5" name="message" placeholder="Type your message here..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 rounded-pill py-2.5 shadow-sm">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information & Details -->
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="card border-0 shadow-sm rounded-4 p-3 mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title fw-bold mb-4" style="font-family: 'Playfair Display', serif; color: var(--primary);">
+                            Contact Information
+                        </h3>
+                        
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="rounded-circle p-3 me-3 shadow-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background: rgba(111, 78, 55, 0.1); color: var(--primary);">
+                                <i class="fas fa-location-dot fa-lg"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1" style="color: var(--primary);">Address</h6>
+                                <p class="text-muted mb-0 small" style="line-height: 1.6;">
+                                    123 Book Street, Literary Lane<br>
+                                    Mumbai, Maharashtra 400001, India
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="rounded-circle p-3 me-3 shadow-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background: rgba(111, 78, 55, 0.1); color: var(--primary);">
+                                <i class="fas fa-phone fa-lg"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1" style="color: var(--primary);">Phone</h6>
+                                <p class="text-muted mb-0 small" style="line-height: 1.6;">
+                                    +91 98765 43210<br>
+                                    +91 98765 43211
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="rounded-circle p-3 me-3 shadow-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background: rgba(111, 78, 55, 0.1); color: var(--primary);">
+                                <i class="fas fa-envelope fa-lg"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1" style="color: var(--primary);">Email</h6>
+                                <p class="text-muted mb-0 small" style="line-height: 1.6;">
+                                    info@booknest.com<br>
+                                    support@booknest.com
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start">
+                            <div class="rounded-circle p-3 me-3 shadow-sm d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background: rgba(111, 78, 55, 0.1); color: var(--primary);">
+                                <i class="fas fa-clock fa-lg"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1" style="color: var(--primary);">Business Hours</h6>
+                                <p class="text-muted mb-0 small" style="line-height: 1.6;">
+                                    Monday - Friday: 9:00 AM - 6:00 PM<br>
+                                    Saturday: 10:00 AM - 4:00 PM<br>
+                                    Sunday: Closed
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media Card -->
+                <div class="card border-0 shadow-sm rounded-4 p-3">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3" style="font-family: 'Playfair Display', serif; color: var(--primary);">
+                            Connect With Us
+                        </h5>
+                        <p class="text-muted small mb-3">Follow us on social media for new book launches, author interviews, and exclusive discounts.</p>
+                        <div class="d-flex gap-2 social-icons">
+                            <a href="#" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; color: var(--primary);">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; color: var(--primary);">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; color: var(--primary);">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; color: var(--primary);">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; color: var(--primary);">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Google Maps Placeholder Card -->
+        <div class="row" data-aos="fade-up">
+            <div class="col-lg-12">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
+                        <h4 class="fw-bold mb-1" style="font-family: 'Playfair Display', serif; color: var(--primary);">
+                            <i class="fas fa-map-location-dot me-2" style="color: var(--accent);"></i>Our Location
+                        </h4>
+                        <p class="text-muted small">Visit our flagship store in Mumbai, Maharashtra.</p>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="position-relative rounded-4 overflow-hidden shadow-inner" style="min-height: 280px; background: linear-gradient(135deg, #e0deda 0%, #c9c5bd 100%);">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3773.795493036066!2d72.8333!3d18.9220!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDU1JzE5LjIiTiA3MsKwNTAnMDA.0IkE!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+                                    style="border:0; width: 100%; height: 280px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

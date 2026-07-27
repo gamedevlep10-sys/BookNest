@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: navbar}"></div>
+
+    <!-- Hero Banner -->
+    <section class="py-5 text-center position-relative overflow-hidden mb-5" style="background: linear-gradient(135deg, var(--secondary) 0%, #e8e4df 100%); border-bottom: 1px solid var(--border);">
+        <div class="container" data-aos="fade-up">
+            <nav aria-label="breadcrumb" class="d-flex justify-content-center mb-3">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a th:href="@{/}" class="text-decoration-none text-muted"><i class="fas fa-home me-1"></i>Home</a></li>
+                    <li class="breadcrumb-item active text-primary font-weight-bold" aria-current="page">About Us</li>
+                </ol>
+            </nav>
+            <p class="section-subtitle mb-2">Discover Our Purpose</p>
+            <h1 class="display-4 fw-bold mb-3" style="font-family: 'Playfair Display', serif; color: var(--primary);">About BookNest</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 680px;">
+                Empowering readers around the globe with carefully curated collections, timeless classics, and contemporary masterpieces.
+            </p>
+        </div>
+    </section>
+
+    <div class="container mb-5">
+        <!-- Story Section -->
+        <div class="row align-items-center mb-5 py-3">
+            <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=700&h=480&fit=crop" 
+                         alt="BookNest Story" class="img-fluid rounded-4 shadow-lg">
+                    <div class="position-absolute bottom-0 end-0 p-4 d-none d-sm-block">
+                        <div class="bg-white rounded-3 shadow-lg p-3 text-center" style="border-left: 4px solid var(--accent);">
+                            <h4 class="fw-bold mb-0" style="color: var(--primary);">Est. 2024</h4>
+                            <p class="mb-0 small text-muted">Passionate about Books</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                <p class="section-subtitle mb-2">Our Story</p>
+                <h2 class="display-5 fw-bold mb-4" style="font-family: 'Playfair Display', serif; color: var(--primary);">
+                    Crafting Literary Journeys
+                </h2>
+                <p class="lead text-muted mb-4" style="line-height: 1.8;">
+                    BookNest was born out of an unyielding passion for stories, ideas, and knowledge. What started as a modest dream to build a modern sanctuary for book enthusiasts has grown into a vibrant online community serving readers worldwide.
+                </p>
+                <p class="text-muted mb-4" style="line-height: 1.8;">
+                    We believe that every book holds the potential to inspire, educate, and transform lives. Our team meticulously curates every title, partnering with trusted publishers and independent authors to bring you an unparalleled reading experience.
+                </p>
+                <div class="d-flex gap-3">
+                    <a th:href="@{/books}" class="btn btn-primary btn-lg rounded-pill px-4">
+                        <i class="fas fa-book me-2"></i>Explore Library
+                    </a>
+                    <a th:href="@{/contact}" class="btn btn-outline-primary btn-lg rounded-pill px-4">
+                        <i class="fas fa-paper-plane me-2"></i>Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mission & Vision Section -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center position-relative" style="background: white; border-top: 4px solid var(--primary) !important;">
+                    <div class="card-body">
+                        <div class="mb-3 d-inline-flex align-items-center justify-content-center rounded-circle p-3 shadow-sm" style="width: 70px; height: 70px; background: rgba(111, 78, 55, 0.1);">
+                            <i class="fas fa-bullseye fa-2x" style="color: var(--primary);"></i>
+                        </div>
+                        <h3 class="fw-bold mb-3" style="font-family: 'Playfair Display', serif; color: var(--primary);">Our Mission</h3>
+                        <p class="text-muted lead" style="font-size: 1.05rem; line-height: 1.7;">
+                            To make quality literature accessible, affordable, and engaging for readers everywhere. We aim to nurture a global community of lifelong learners by providing curated books, seamless technology, and exceptional service.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center position-relative" style="background: white; border-top: 4px solid var(--accent) !important;">
+                    <div class="card-body">
+                        <div class="mb-3 d-inline-flex align-items-center justify-content-center rounded-circle p-3 shadow-sm" style="width: 70px; height: 70px; background: rgba(200, 155, 60, 0.15);">
+                            <i class="fas fa-eye fa-2x" style="color: var(--accent);"></i>
+                        </div>
+                        <h3 class="fw-bold mb-3" style="font-family: 'Playfair Display', serif; color: var(--primary);">Our Vision</h3>
+                        <p class="text-muted lead" style="font-size: 1.05rem; line-height: 1.7;">
+                            To become the premier global destination for literary exploration, recognized for our commitment to quality curation, author support, sustainable practices, and inspiring readers of all generations.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="py-5 px-4 mb-5 rounded-4 shadow-sm" style="background: linear-gradient(135deg, var(--primary) 0%, #4a3424 100%); color: white;" data-aos="fade-up">
+            <div class="text-center mb-4">
+                <p class="text-uppercase tracking-wider text-warning mb-1" style="letter-spacing: 2px; font-weight: 600;">BookNest in Numbers</p>
+                <h2 class="display-6 fw-bold" style="font-family: 'Playfair Display', serif;">Our Impact At A Glance</h2>
+            </div>
+            <div class="row g-4 text-center">
+                <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="p-3">
+                        <i class="fas fa-book-open fa-2x mb-3 text-warning"></i>
+                        <h2 class="fw-bold mb-1" style="font-family: 'Playfair Display', serif;">10,000+</h2>
+                        <p class="mb-0 text-white-50">Books Available</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="p-3">
+                        <i class="fas fa-users fa-2x mb-3 text-warning"></i>
+                        <h2 class="fw-bold mb-1" style="font-family: 'Playfair Display', serif;">50,000+</h2>
+                        <p class="mb-0 text-white-50">Happy Readers</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="p-3">
+                        <i class="fas fa-feather-alt fa-2x mb-3 text-warning"></i>
+                        <h2 class="fw-bold mb-1" style="font-family: 'Playfair Display', serif;">500+</h2>
+                        <p class="mb-0 text-white-50">Authors & Publishers</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="p-3">
+                        <i class="fas fa-star fa-2x mb-3 text-warning"></i>
+                        <h2 class="fw-bold mb-1" style="font-family: 'Playfair Display', serif;">99.8%</h2>
+                        <p class="mb-0 text-white-50">Satisfaction Rate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Choose Us Section -->
+        <div class="row mb-5" data-aos="fade-up">
+            <div class="col-lg-12">
+                <div class="card border-0 shadow-sm p-4 rounded-4">
+                    <div class="card-body text-center">
+                        <p class="section-subtitle mb-2">The BookNest Advantage</p>
+                        <h2 class="section-title mb-4" style="font-family: 'Playfair Display', serif;">Why Choose Us?</h2>
+                        
+                        <div class="row g-4 mt-2">
+                            <div class="col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="100">
+                                <div class="p-3 h-100 rounded-3 border bg-light transition-all">
+                                    <i class="fas fa-check-circle fa-2x mb-3" style="color: var(--accent);"></i>
+                                    <h5 class="fw-bold mb-2">Curated Selection</h5>
+                                    <p class="text-muted small mb-0">Every book in our store is handpicked for exceptional quality and relevance.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="200">
+                                <div class="p-3 h-100 rounded-3 border bg-light transition-all">
+                                    <i class="fas fa-tags fa-2x mb-3" style="color: var(--accent);"></i>
+                                    <h5 class="fw-bold mb-2">Best Prices</h5>
+                                    <p class="text-muted small mb-0">Competitive pricing, bundle discounts, and regular offers for true book lovers.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="300">
+                                <div class="p-3 h-100 rounded-3 border bg-light transition-all">
+                                    <i class="fas fa-truck-fast fa-2x mb-3" style="color: var(--accent);"></i>
+                                    <h5 class="fw-bold mb-2">Swift Shipping</h5>
+                                    <p class="text-muted small mb-0">Fast, reliable, and trackable shipping directly to your doorstep.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="400">
+                                <div class="p-3 h-100 rounded-3 border bg-light transition-all">
+                                    <i class="fas fa-shield-halved fa-2x mb-3" style="color: var(--accent);"></i>
+                                    <h5 class="fw-bold mb-2">Secure Payments</h5>
+                                    <p class="text-muted small mb-0">100% safe & encrypted checkout process protecting your data.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="500">
+                                <div class="p-3 h-100 rounded-3 border bg-light transition-all">
+                                    <i class="fas fa-headset fa-2x mb-3" style="color: var(--accent);"></i>
+                                    <h5 class="fw-bold mb-2">24/7 Customer Care</h5>
+                                    <p class="text-muted small mb-0">Round-the-clock friendly assistance for any inquiries or orders.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="600">
+                                <div class="p-3 h-100 rounded-3 border bg-light transition-all">
+                                    <i class="fas fa-rotate-left fa-2x mb-3" style="color: var(--accent);"></i>
+                                    <h5 class="fw-bold mb-2">Hassle-Free Returns</h5>
+                                    <p class="text-muted small mb-0">Easy 30-day return policy for ultimate peace of mind.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
